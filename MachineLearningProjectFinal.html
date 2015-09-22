@@ -92,7 +92,7 @@ library(ggplot2)</code></pre>
 </div>
 <div id="load-data-and-tidy-up-data" class="section level3">
 <h3>Load data and tidy up data:</h3>
-<p>For tidying up the data, columns that are secondary (calculated) in nature and are mostly NA are removed. Also, time stamps and index are not expected to contribute to the final model and are therefore remove. The data frame is reduced from 160 columns to 56 columns.</p>
+<p>For tidying up the data, columns that are secondary (calculated) in nature and are mostly NA are removed. Also, time stamps and index are not expected to contribute to the final model and are therefore removed. The data frame is reduced from 160 columns to 56 columns.</p>
 <pre class="r"><code>mytrain&lt;-read.csv(&quot;mlTrain.csv&quot;)
 
 mytrain&lt;-select(mytrain, -starts_with(&quot;max_&quot;),-starts_with(&quot;min_&quot;),-starts_with(&quot;amplitude&quot;),-starts_with(&quot;kurtosis_&quot;),-starts_with(&quot;skewness&quot;),-starts_with(&quot;var_&quot;),-starts_with(&quot;avg_&quot;),-starts_with(&quot;stddev&quot;),-X,-c(raw_timestamp_part_1:cvtd_timestamp))
@@ -160,28 +160,28 @@ modfitrf&lt;-train(classe~.,data=training,method='rf')</code></pre>
 <pre><code>## [1] 13737</code></pre>
 <pre><code>## [1] 5885</code></pre>
 <pre class="r"><code>#predicting on the training data used for model building
-predtrain&lt;-predict(modfittree,newdata=training)</code></pre>
+predtrain1&lt;-predict(modfittree,newdata=training)</code></pre>
 <pre><code>## Loading required package: rpart</code></pre>
-<pre class="r"><code>table(predtrain,training$classe)</code></pre>
-<pre><code>##          
-## predtrain    A    B    C    D    E
-##         A 3560 1078 1116 1002  363
-##         B   49  902   70  399  341
-##         C  286  678 1210  851  672
-##         D    0    0    0    0    0
-##         E   11    0    0    0 1149</code></pre>
+<pre class="r"><code>table(predtrain1,training$classe)</code></pre>
+<pre><code>##           
+## predtrain1    A    B    C    D    E
+##          A 3560 1078 1116 1002  363
+##          B   49  902   70  399  341
+##          C  286  678 1210  851  672
+##          D    0    0    0    0    0
+##          E   11    0    0    0 1149</code></pre>
 <pre class="r"><code>#predicting on the test data selected from the train
-pred&lt;-predict(modfittree,newdata=testing)
-table(pred,testing$classe)</code></pre>
-<pre><code>##     
-## pred    A    B    C    D    E
-##    A 1515  487  470  434  161
-##    B   32  384   38  169  145
-##    C  124  268  518  361  294
-##    D    0    0    0    0    0
-##    E    3    0    0    0  482</code></pre>
+pred1&lt;-predict(modfittree,newdata=testing)
+table(pred1,testing$classe)</code></pre>
+<pre><code>##      
+## pred1    A    B    C    D    E
+##     A 1515  487  470  434  161
+##     B   32  384   38  169  145
+##     C  124  268  518  361  294
+##     D    0    0    0    0    0
+##     E    3    0    0    0  482</code></pre>
 <pre class="r"><code>#predicting on the training data used for model building
-predtrain&lt;-predict(modfitgbm,newdata=training)</code></pre>
+predtrain2&lt;-predict(modfitgbm,newdata=training)</code></pre>
 <pre><code>## Loading required package: gbm
 ## Loading required package: survival
 ## 
@@ -207,26 +207,26 @@ predtrain&lt;-predict(modfitgbm,newdata=training)</code></pre>
 ## 
 ##     arrange, count, desc, failwith, id, mutate, rename, summarise,
 ##     summarize</code></pre>
-<pre class="r"><code>table(predtrain,training$classe)</code></pre>
-<pre><code>##          
-## predtrain    A    B    C    D    E
-##         A 3899   10    0    0    0
-##         B    7 2633    9    3    3
-##         C    0   15 2381   17    3
-##         D    0    0    3 2230    9
-##         E    0    0    3    2 2510</code></pre>
+<pre class="r"><code>table(predtrain2,training$classe)</code></pre>
+<pre><code>##           
+## predtrain2    A    B    C    D    E
+##          A 3899   10    0    0    0
+##          B    7 2633    9    3    3
+##          C    0   15 2381   17    3
+##          D    0    0    3 2230    9
+##          E    0    0    3    2 2510</code></pre>
 <pre class="r"><code>#predicting on the test data selected from the train
-pred&lt;-predict(modfitgbm,newdata=testing)
-table(pred,testing$classe)</code></pre>
-<pre><code>##     
-## pred    A    B    C    D    E
-##    A 1665    7    0    1    2
-##    B    9 1114    7    3    5
-##    C    0   15 1016    9    3
-##    D    0    1    2  947    6
-##    E    0    2    1    4 1066</code></pre>
+pred2&lt;-predict(modfitgbm,newdata=testing)
+table(pred2,testing$classe)</code></pre>
+<pre><code>##      
+## pred2    A    B    C    D    E
+##     A 1665    7    0    1    2
+##     B    9 1114    7    3    5
+##     C    0   15 1016    9    3
+##     D    0    1    2  947    6
+##     E    0    2    1    4 1066</code></pre>
 <pre class="r"><code>#predicting on the training data used for model building
-predtrain&lt;-predict(modfitrf,newdata=training)</code></pre>
+predtrain3&lt;-predict(modfitrf,newdata=training)</code></pre>
 <pre><code>## Loading required package: randomForest
 ## randomForest 4.6-10
 ## Type rfNews() to see new features/changes/bug fixes.
@@ -236,24 +236,57 @@ predtrain&lt;-predict(modfitrf,newdata=training)</code></pre>
 ## The following object is masked from 'package:dplyr':
 ## 
 ##     combine</code></pre>
-<pre class="r"><code>table(predtrain,training$classe)</code></pre>
-<pre><code>##          
-## predtrain    A    B    C    D    E
-##         A 3906    0    0    0    0
-##         B    0 2658    0    0    0
-##         C    0    0 2396    0    0
-##         D    0    0    0 2252    0
-##         E    0    0    0    0 2525</code></pre>
+<pre class="r"><code>table(predtrain3,training$classe)</code></pre>
+<pre><code>##           
+## predtrain3    A    B    C    D    E
+##          A 3906    0    0    0    0
+##          B    0 2658    0    0    0
+##          C    0    0 2396    0    0
+##          D    0    0    0 2252    0
+##          E    0    0    0    0 2525</code></pre>
 <pre class="r"><code>#predicting on the test data selected from the train
-pred&lt;-predict(modfitrf,newdata=testing)
-table(pred,testing$classe)</code></pre>
-<pre><code>##     
-## pred    A    B    C    D    E
-##    A 1674    1    0    0    0
-##    B    0 1136    4    0    0
-##    C    0    2 1022    6    0
-##    D    0    0    0  958    0
-##    E    0    0    0    0 1082</code></pre>
+pred3&lt;-predict(modfitrf,newdata=testing)
+table(pred3,testing$classe)</code></pre>
+<pre><code>##      
+## pred3    A    B    C    D    E
+##     A 1674    1    0    0    0
+##     B    0 1136    4    0    0
+##     C    0    2 1022    6    0
+##     D    0    0    0  958    0
+##     E    0    0    0    0 1082</code></pre>
+<p>Accuracy can also be more conveniently obtained by using the function confusionMatrix (see below), but nost of the outputs are not shown so that the writeup will not be too lengthy.</p>
+<pre class="r"><code>confusionMatrix(pred3,testing$classe)</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction    A    B    C    D    E
+##          A 1674    1    0    0    0
+##          B    0 1136    4    0    0
+##          C    0    2 1022    6    0
+##          D    0    0    0  958    0
+##          E    0    0    0    0 1082
+## 
+## Overall Statistics
+##                                           
+##                Accuracy : 0.9978          
+##                  95% CI : (0.9962, 0.9988)
+##     No Information Rate : 0.2845          
+##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
+##                                           
+##                   Kappa : 0.9972          
+##  Mcnemar's Test P-Value : NA              
+## 
+## Statistics by Class:
+## 
+##                      Class: A Class: B Class: C Class: D Class: E
+## Sensitivity            1.0000   0.9974   0.9961   0.9938   1.0000
+## Specificity            0.9998   0.9992   0.9984   1.0000   1.0000
+## Pos Pred Value         0.9994   0.9965   0.9922   1.0000   1.0000
+## Neg Pred Value         1.0000   0.9994   0.9992   0.9988   1.0000
+## Prevalence             0.2845   0.1935   0.1743   0.1638   0.1839
+## Detection Rate         0.2845   0.1930   0.1737   0.1628   0.1839
+## Detection Prevalence   0.2846   0.1937   0.1750   0.1628   0.1839
+## Balanced Accuracy      0.9999   0.9983   0.9972   0.9969   1.0000</code></pre>
 </div>
 <div id="accuracies" class="section level3">
 <h3>Accuracies:</h3>

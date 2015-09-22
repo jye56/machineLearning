@@ -1,6 +1,6 @@
 ---
 title: "Machine Learning Project"
-output: html_document
+output: pdf_document
 ---
 
 # 1. SYNOPSIS
@@ -41,7 +41,7 @@ library(ggplot2)
 ```
 ### Load data and tidy up data:
 
-For tidying up the data, columns that are secondary (calculated) in nature and are mostly NA are removed. Also, time stamps and index are not expected to contribute to the final model and are therefore remove. The data frame is reduced from 160 columns to 56 columns.
+For tidying up the data, columns that are secondary (calculated) in nature and are mostly NA are removed. Also, time stamps and index are not expected to contribute to the final model and are therefore removed. The data frame is reduced from 160 columns to 56 columns.
 
 ```{r}
 mytrain<-read.csv("mlTrain.csv")
@@ -94,32 +94,41 @@ modfitrf<-train(classe~.,data=training,method='rf')
 length(training[,1]);length(testing[,1])
 
 #predicting on the training data used for model building
-predtrain<-predict(modfittree,newdata=training)
-table(predtrain,training$classe)
+predtrain1<-predict(modfittree,newdata=training)
+table(predtrain1,training$classe)
 
 #predicting on the test data selected from the train
-pred<-predict(modfittree,newdata=testing)
-table(pred,testing$classe)
+pred1<-predict(modfittree,newdata=testing)
+table(pred1,testing$classe)
 
 
 #predicting on the training data used for model building
-predtrain<-predict(modfitgbm,newdata=training)
-table(predtrain,training$classe)
+predtrain2<-predict(modfitgbm,newdata=training)
+table(predtrain2,training$classe)
 
 #predicting on the test data selected from the train
-pred<-predict(modfitgbm,newdata=testing)
-table(pred,testing$classe)
+pred2<-predict(modfitgbm,newdata=testing)
+table(pred2,testing$classe)
 
 #predicting on the training data used for model building
-predtrain<-predict(modfitrf,newdata=training)
-table(predtrain,training$classe)
+predtrain3<-predict(modfitrf,newdata=training)
+table(predtrain3,training$classe)
 
 #predicting on the test data selected from the train
-pred<-predict(modfitrf,newdata=testing)
-table(pred,testing$classe)
+pred3<-predict(modfitrf,newdata=testing)
+table(pred3,testing$classe)
 
 
 ```
+Accuracy can also be more conveniently obtained by using the function confusionMatrix (see below), but nost of the outputs are not shown so that the writeup will not be too lengthy.
+
+```{r}
+confusionMatrix(pred3,testing$classe)
+
+```
+
+
+
 ### Accuracies:
 
 The above data are used to calculate the prediction accuracy for all three models

@@ -43,17 +43,27 @@ library(ggplot2)
 ```
 ### Load data and tidy up data:
 
-For tidying up the data, columns that are secondary (calculated) in nature and are mostly NA are removed. Also, time stamps and index are not expected to contribute to the final model and are therefore remove. The data frame is reduced from 160 columns to 56 columns.
+For tidying up the data, columns that are secondary (calculated) in nature and are mostly NA are removed. Also, time stamps and index are not expected to contribute to the final model and are therefore removed. The data frame is reduced from 160 columns to 56 columns.
 
 
 ```r
 mytrain<-read.csv("mlTrain.csv")
 
 mytrain<-select(mytrain, -starts_with("max_"),-starts_with("min_"),-starts_with("amplitude"),-starts_with("kurtosis_"),-starts_with("skewness"),-starts_with("var_"),-starts_with("avg_"),-starts_with("stddev"),-X,-c(raw_timestamp_part_1:cvtd_timestamp))
+```
 
+```
+## Error in select(mytrain, -starts_with("max_"), -starts_with("min_"), -starts_with("amplitude"), : unused arguments (-starts_with("max_"), -starts_with("min_"), -starts_with("amplitude"), -starts_with("kurtosis_"), -starts_with("skewness"), -starts_with("var_"), -starts_with("avg_"), -starts_with("stddev"), -X, -c(raw_timestamp_part_1:cvtd_timestamp))
+```
+
+```r
 mytest<-read.csv("mlTest.csv")
 
 mytest<-select(mytest, -starts_with("max_"),-starts_with("min_"),-starts_with("amplitude"),-starts_with("kurtosis_"),-starts_with("skewness"),-starts_with("var_"),-starts_with("avg_"),-starts_with("stddev"),-X,-c(raw_timestamp_part_1:cvtd_timestamp))
+```
+
+```
+## Error in select(mytest, -starts_with("max_"), -starts_with("min_"), -starts_with("amplitude"), : unused arguments (-starts_with("max_"), -starts_with("min_"), -starts_with("amplitude"), -starts_with("kurtosis_"), -starts_with("skewness"), -starts_with("var_"), -starts_with("avg_"), -starts_with("stddev"), -X, -c(raw_timestamp_part_1:cvtd_timestamp))
 ```
 
 ### Partition the data set for cross validation
@@ -148,99 +158,142 @@ length(training[,1]);length(testing[,1])
 
 ```r
 #predicting on the training data used for model building
-predtrain<-predict(modfittree,newdata=training)
-table(predtrain,training$classe)
+predtrain1<-predict(modfittree,newdata=training)
+table(predtrain1,training$classe)
 ```
 
 ```
-##          
-## predtrain    A    B    C    D    E
-##         A 3560 1078 1116 1002  363
-##         B   49  902   70  399  341
-##         C  286  678 1210  851  672
-##         D    0    0    0    0    0
-##         E   11    0    0    0 1149
+##           
+## predtrain1    A    B    C    D    E
+##          A 3560 1078 1116 1002  363
+##          B   49  902   70  399  341
+##          C  286  678 1210  851  672
+##          D    0    0    0    0    0
+##          E   11    0    0    0 1149
 ```
 
 ```r
 #predicting on the test data selected from the train
-pred<-predict(modfittree,newdata=testing)
-table(pred,testing$classe)
+pred1<-predict(modfittree,newdata=testing)
+table(pred1,testing$classe)
 ```
 
 ```
-##     
-## pred    A    B    C    D    E
-##    A 1515  487  470  434  161
-##    B   32  384   38  169  145
-##    C  124  268  518  361  294
-##    D    0    0    0    0    0
-##    E    3    0    0    0  482
+##      
+## pred1    A    B    C    D    E
+##     A 1515  487  470  434  161
+##     B   32  384   38  169  145
+##     C  124  268  518  361  294
+##     D    0    0    0    0    0
+##     E    3    0    0    0  482
 ```
 
 ```r
 #predicting on the training data used for model building
-predtrain<-predict(modfitgbm,newdata=training)
-table(predtrain,training$classe)
+predtrain2<-predict(modfitgbm,newdata=training)
+table(predtrain2,training$classe)
 ```
 
 ```
-##          
-## predtrain    A    B    C    D    E
-##         A 3899   10    0    0    0
-##         B    7 2633    9    3    3
-##         C    0   15 2381   17    3
-##         D    0    0    3 2230    9
-##         E    0    0    3    2 2510
+##           
+## predtrain2    A    B    C    D    E
+##          A 3899   10    0    0    0
+##          B    7 2633    9    3    3
+##          C    0   15 2381   17    3
+##          D    0    0    3 2230    9
+##          E    0    0    3    2 2510
 ```
 
 ```r
 #predicting on the test data selected from the train
-pred<-predict(modfitgbm,newdata=testing)
-table(pred,testing$classe)
+pred2<-predict(modfitgbm,newdata=testing)
+table(pred2,testing$classe)
 ```
 
 ```
-##     
-## pred    A    B    C    D    E
-##    A 1665    7    0    1    2
-##    B    9 1114    7    3    5
-##    C    0   15 1016    9    3
-##    D    0    1    2  947    6
-##    E    0    2    1    4 1066
+##      
+## pred2    A    B    C    D    E
+##     A 1665    7    0    1    2
+##     B    9 1114    7    3    5
+##     C    0   15 1016    9    3
+##     D    0    1    2  947    6
+##     E    0    2    1    4 1066
 ```
 
 ```r
 #predicting on the training data used for model building
-predtrain<-predict(modfitrf,newdata=training)
-table(predtrain,training$classe)
+predtrain3<-predict(modfitrf,newdata=training)
+table(predtrain3,training$classe)
 ```
 
 ```
-##          
-## predtrain    A    B    C    D    E
-##         A 3906    0    0    0    0
-##         B    0 2658    0    0    0
-##         C    0    0 2396    0    0
-##         D    0    0    0 2252    0
-##         E    0    0    0    0 2525
+##           
+## predtrain3    A    B    C    D    E
+##          A 3906    0    0    0    0
+##          B    0 2658    0    0    0
+##          C    0    0 2396    0    0
+##          D    0    0    0 2252    0
+##          E    0    0    0    0 2525
 ```
 
 ```r
 #predicting on the test data selected from the train
-pred<-predict(modfitrf,newdata=testing)
-table(pred,testing$classe)
+pred3<-predict(modfitrf,newdata=testing)
+table(pred3,testing$classe)
 ```
 
 ```
-##     
-## pred    A    B    C    D    E
-##    A 1674    1    0    0    0
-##    B    0 1136    4    0    0
-##    C    0    2 1022    6    0
-##    D    0    0    0  958    0
-##    E    0    0    0    0 1082
+##      
+## pred3    A    B    C    D    E
+##     A 1674    1    0    0    0
+##     B    0 1136    4    0    0
+##     C    0    2 1022    6    0
+##     D    0    0    0  958    0
+##     E    0    0    0    0 1082
 ```
+Accuracy can also be more conveniently obtained by using the function confusionMatrix (see below), but nost of the outputs are not shown so that the writeup will not be too lengthy.
+
+
+```r
+confusionMatrix(pred3,testing$classe)
+```
+
+```
+## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction    A    B    C    D    E
+##          A 1674    1    0    0    0
+##          B    0 1136    4    0    0
+##          C    0    2 1022    6    0
+##          D    0    0    0  958    0
+##          E    0    0    0    0 1082
+## 
+## Overall Statistics
+##                                           
+##                Accuracy : 0.9978          
+##                  95% CI : (0.9962, 0.9988)
+##     No Information Rate : 0.2845          
+##     P-Value [Acc > NIR] : < 2.2e-16       
+##                                           
+##                   Kappa : 0.9972          
+##  Mcnemar's Test P-Value : NA              
+## 
+## Statistics by Class:
+## 
+##                      Class: A Class: B Class: C Class: D Class: E
+## Sensitivity            1.0000   0.9974   0.9961   0.9938   1.0000
+## Specificity            0.9998   0.9992   0.9984   1.0000   1.0000
+## Pos Pred Value         0.9994   0.9965   0.9922   1.0000   1.0000
+## Neg Pred Value         1.0000   0.9994   0.9992   0.9988   1.0000
+## Prevalence             0.2845   0.1935   0.1743   0.1638   0.1839
+## Detection Rate         0.2845   0.1930   0.1737   0.1628   0.1839
+## Detection Prevalence   0.2846   0.1937   0.1750   0.1628   0.1839
+## Balanced Accuracy      0.9999   0.9983   0.9972   0.9969   1.0000
+```
+
+
+
 ### Accuracies:
 
 The above data are used to calculate the prediction accuracy for all three models
